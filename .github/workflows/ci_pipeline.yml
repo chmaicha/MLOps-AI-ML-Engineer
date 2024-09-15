@@ -38,7 +38,7 @@ jobs:
       - name: Checkout code        
         uses: actions/checkout@v2        
       - name: Build Docker image       
-        run: docker build -t your-image-name .
+        run: docker build -t my-fastapi-app .
 
   api-test:    
     needs: docker-build    
@@ -52,7 +52,7 @@ jobs:
     steps:      
       - name: Test API        
         run: |          
-          curl -X POST http://localhost:8000/your-endpoint \          
+          curl -X POST http://localhost:8000/generate/ \          
           -H "Content-Type: application/json" \          
           -d '{"input_data": "test data"}' \          
           | grep "expected response"
