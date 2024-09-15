@@ -43,10 +43,10 @@ jobs:
         run: |
           docker run -d -p 8000:8000 --name fastapi-app my-fastapi-app
 
-  api-test:
-    needs: docker-build
-    runs-on: ubuntu-latest
-    steps:
+      - name: Wait for the container to be ready
+        run: |
+          sleep 10 
+
       - name: Test API
         run: |
           curl -X POST http://localhost:8000/generate/ \
