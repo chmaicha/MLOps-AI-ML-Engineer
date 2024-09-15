@@ -1,4 +1,3 @@
-
 name: CI Pipeline
 
 on:
@@ -30,29 +29,27 @@ jobs:
       - name: Run Flake8 Linting
         run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
-    
-  docker-build:    
-    runs-on: ubuntu-latest  
-  
-    steps:     
-      - name: Checkout code        
-        uses: actions/checkout@v2        
-      - name: Build Docker image       
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
         run: docker build -t my-fastapi-app .
 
-  api-test:    
-    needs: docker-build    
-    runs-on: ubuntu-latest    
-    services:      
-      docker:        
-        image: my-fastapi-app        
-        options: --health-cmd "curl --fail http://localhost:8000/health || exit 1"        
-        ports:          
-          - 8000:8000    
-    steps:      
-      - name: Test API        
-        run: |          
-          curl -X POST http://localhost:8000/generate/ \          
-          -H "Content-Type: application/json" \          
-          -d '{"input_data": "test data"}' \          
+      - name: Run Docker container
+        run: |
+          docker run -d -p 8000:8000 --name fastapi-app my-fastapi-app
+
+  api-test:
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test API
+        run: |
+          curl -X POST http://localhost:8000/generate/ \
+          -H "Content-Type: application/json" \
+          -d '{"input_data": "test data"}' \
           | grep "expected response"
