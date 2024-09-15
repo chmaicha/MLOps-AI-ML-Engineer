@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest    
     services:      
       docker:        
-        image: text-generation-api        
+        image: my-fastapi-app        
         options: --health-cmd "curl --fail http://localhost:8000/health || exit 1"        
         ports:          
           - 8000:8000    
