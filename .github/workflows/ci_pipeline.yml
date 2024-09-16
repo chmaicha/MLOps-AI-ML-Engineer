@@ -34,8 +34,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Check Docker version
+        run: docker --version
+
       - name: Build Docker image
         run: docker build -t my-fastapi-app .
+
+      - name: List Docker images
+        run: docker images
 
   api-test:
     runs-on: ubuntu-latest
