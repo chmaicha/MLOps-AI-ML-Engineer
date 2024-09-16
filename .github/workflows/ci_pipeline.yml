@@ -37,8 +37,6 @@ jobs:
       - name: Build Docker image
         run: docker build -t my-fastapi-app:latest .
 
-      - name: List Docker images
-        run: docker images
 
   api-test:
     runs-on: ubuntu-latest
@@ -46,11 +44,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Stop and remove existing Docker container
-        run: |
-          docker stop my-fastapi-app || true
-          docker rm my-fastapi-app || true
 
       - name: Run Docker container
         run: |
